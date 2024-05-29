@@ -51,5 +51,10 @@ export async function POST(req: Request) {
     );
   }
 
-  return NextResponse.json(user);
+  const response = {
+    id: user.id,
+    email: user.email,
+  }
+
+  return NextResponse.json(response);
 }
