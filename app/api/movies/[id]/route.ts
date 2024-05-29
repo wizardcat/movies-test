@@ -9,6 +9,14 @@ interface movieRouteContext {
 }
 
 async function findMovieById(id: string) {
+
+  if (!id) {
+    return {
+        code: "missing_query_param",
+        messages: "Query param id is required",
+      }
+  }
+
   const movie = await prisma.movies.findUnique({
     where: {
       id,
