@@ -24,7 +24,7 @@ export const useUploadForm = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("/api/images", {
+      const response = await fetch("/api/v1/images", {
         method: "POST",
         body: formData,
       });

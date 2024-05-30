@@ -1,5 +1,5 @@
 import { config } from "@/app/common/config";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
 const {
@@ -48,4 +48,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ error });
   }
 }
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const fileName = searchParams.get("fileName");
 
+  if (!fileName) {
+    return NextResponse.json({ error: "Query param fileName is required." }, { status: 400 });
+  }
+
+  const params = {
+    Bucket: bucket,
+    Key: `images/${fileName}`,
+  };
+
+  const command = new GetObjectCommand(params);
+  const data = await s3Client.send(command);
+
+  const imageArray = await new Promise<Buffer>((resolve) => {
+    const chunks: Buffer[] = [];
+    const stream = data.Body as NodeJS.ReadableStream;
+
+    stream.on("data", (chunk: Buffer) => chunks.push(chunk));
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
+  });
+
+  const image = Buffer.from(imageArray).toString("base64");
+
+  return NextResponse.json({ success: true, image }, { headers: { "Content-Type": "image/jpg" } });
+}
