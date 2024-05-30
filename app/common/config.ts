@@ -7,6 +7,7 @@ export const config = {
       accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
     },
-    bucket: process.env.AWS_S3_BUCKET_NAME
+    bucket: process.env.AWS_S3_BUCKET_NAME,
+    bucketUri: process.env.AWS_S3_BUCKET_URI,
   },
 };
