@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         code: "movie_already_exists",
         message: "Movie already exists",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -49,9 +49,13 @@ export async function GET(req: Request) {
           message: "Query param userId is required",
         },
       ],
-      { status: 400 }
+      { status: 400 },
     );
   }
+
+  const limit = Number(searchParams.get("limit")) || 10;
+  const page = Number(searchParams.get("page")) || 1;
+  const offset = (page - 1) * limit;
 
   const movies = await prisma.movies.findMany({
     where: {
@@ -60,7 +64,23 @@ export async function GET(req: Request) {
     orderBy: {
       title: "asc",
     },
+    skip: offset,
+    take: limit,
   });
 
-  return NextResponse.json(movies);
+  const totalMovies = await prisma.movies.count({
+    where: {
+      userId,
+    },
+  });
+
+  const totalPages = Math.ceil(totalMovies / limit);
+  const prevPage = page > 1 ? page - 1 : null;
+  const nextPage = page < totalPages ? page + 1 : null;
+  const hasPreviousPage = page > 1;
+  const hasNextPage = page < totalPages;
+
+  const response = { movies, totalPages, prevPage, nextPage, hasPreviousPage, hasNextPage };
+
+  return NextResponse.json(response);
 }
