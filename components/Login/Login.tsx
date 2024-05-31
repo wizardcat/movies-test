@@ -1,7 +1,5 @@
 'use client';
 import { Checkbox, Form, Input } from 'antd/lib';
-import { useLogin } from '../../hooks/common/useLogin';
-import styles from './login.module.scss';
 import { useEffect, useState } from 'react';
 import { useLogin } from '../../hooks/common/useLogin';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
