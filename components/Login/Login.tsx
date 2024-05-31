@@ -1,14 +1,14 @@
 'use client';
-import { Checkbox, Form, Input as AntdInput } from 'antd/lib';
-import { useLogin } from '../../hooks/common/useLogin';
-import styles from './login.module.scss';
+import { Input as AntdInput, Checkbox, Form } from 'antd/lib';
 import { useEffect, useState } from 'react';
+import { useLogin } from '../../hooks/common/useLogin';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
+import styles from './login.module.scss';
 
 
 export default function Login() {
   const { emailRules, passwordRules, handleFinish } = useLogin();
-  const rememberUserFromLS = localStorage.getItem("rememberUser") === "true";
+  const rememberUserFromLS = typeof window !== 'undefined' ? localStorage.getItem("rememberUser") === "true" : false;
   const [rememberUser, setRememberUser] = useState<boolean>(rememberUserFromLS || false);
   useEffect(() => {
     localStorage.setItem("rememberUser", String(rememberUser))
