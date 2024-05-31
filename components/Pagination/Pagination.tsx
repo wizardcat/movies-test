@@ -1,22 +1,27 @@
-import { useState } from "react";
 import styles from "./pagination.module.scss";
 import cn from 'classnames';
 
-export const Pagination = ({ className = "" }) => {
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const pages = 5;
-  const setNextPage = () => setCurrentPage(p => p + 1);
-  const setPrevPage = () => setCurrentPage(p => p - 1);
+export const Pagination = ({ 
+  currentPage = 1,
+  setPrevPage = () => {},
+  setNextPage = () => {},
+  setCurrentPage = (i: number) => {}, 
+  data = {} as any,
+}) => {
+  const totalPages = data?.totalPages;
+  const hasPreviousPage = data?.hasPreviousPage;
+  const hasNextPage = data?.hasNextPage;
+
   return (
-    <div className={cn(styles.paginationWrapper, className)}>
+    <div className={styles.paginationWrapper}>
       <div 
         onClick={setPrevPage}
-        className={cn(styles.paginationHandler, currentPage === 1 ? styles.hiddenPaginationHandler : "")}
+        className={cn(styles.paginationHandler, !hasPreviousPage ? styles.hiddenPaginationHandler : "")}
       >
         Prev
       </div>
       <div className={styles.pages}>
-        {new Array(5).fill("").map((_, index) => (
+        {new Array(totalPages).fill("").map((_, index) => (
           <div
             key={index}
             className={cn(styles.currentPage, index + 1 === currentPage ? styles.currentPageActive : "")}
@@ -28,7 +33,7 @@ export const Pagination = ({ className = "" }) => {
       </div>
       <div
         onClick={setNextPage}
-        className={cn(styles.paginationHandler, currentPage === pages ? styles.hiddenPaginationHandler : "")}
+        className={cn(styles.paginationHandler, !hasNextPage ? styles.hiddenPaginationHandler : "")}
       >
         Next
       </div>
