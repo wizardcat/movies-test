@@ -3,39 +3,68 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Input } from 'antd/lib';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SecondaryButton } from "../Buttons/SecondaryButton";
 import { useCreateMovie } from "@/hooks/api/mutations/useCreateMovie";
+import { useGetPoster } from "@/hooks/api/queries/useGetPoster";
+import { useGetMovie } from "@/hooks/api/queries/useGetMovie";
+import { useEditMovie } from "@/hooks/api/mutations/useEditMovie";
 import styles from "./movie.module.scss";
 
 export default function Movie({ id }: {id?: string}) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // const mutationForEditing = useEditMovie();
+  const [poster, setPoster] = useState<File | undefined>();
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
-  const [poster, setPoster] = useState<string>('1234');
-  const { mutate: mutationForCreating, isPending, isError, error } = useCreateMovie();
+  const { mutate: mutationForCreating } = useCreateMovie();
+  const { mutate: mutationForEditing } = useEditMovie();
+  const { data: movieData } = useGetMovie(id);
+  const { data: imageFromId } = useGetPoster(movieData?.poster || "");
 
-  const handleCreateMovie = () => {
-    const movieData = {title, publishingYear: Number(publishingYear), poster};
+  useEffect(() => {
+    if (movieData?.title && movieData?.publishingYear) {
+      setPublishingYear(movieData.publishingYear)
+      setTitle(movieData.title);
+    }
+  }, [movieData?.id])
 
-    mutationForCreating(movieData, {
-      onSuccess: (data) => {
-        console.log('Movie created successfully:', data);
-        // Do something on success, e.g., reset form or show success message
-      },
-      onError: (error) => {
-        console.error('Error creating movie:', error);
-        // Do something on error, e.g., show error message
-      },
-    });
+  useEffect(() => {
+    if (imageFromId?.image && !imagePreview) {
+      setImagePreview(imageFromId.image);
+    }
+  }, [imageFromId, setImagePreview])
+
+  
+
+  const handleMovie = () => {
+    const movieDataCreation = {title, publishingYear: Number(publishingYear), posterFile: poster};
+
+    const dataURLtoFile = (dataUrl: any) => {
+      const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], movieData?.poster || "", {type: "mime"});
+    }
+    
+    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: dataURLtoFile(imageFromId?.image)};
+    if (id) {
+      mutationForEditing(movieDataEditing);
+    } else {
+      mutationForCreating(movieDataCreation)
+    }
   };
   const router = useRouter();
   const { getRootProps, getInputProps } = useDropzone({
     onDropAccepted: (files) => {
       const file = files[0];
+      setPoster(file);
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);
@@ -82,7 +111,7 @@ export default function Movie({ id }: {id?: string}) {
           </div>
           <div className={styles.buttons}>
             <SecondaryButton onClick={() => router.push("/movies")} text="Cancel" />
-            <PrimaryButton onClick={id ? () => {} : () => handleCreateMovie()} text={id ? "Update" : "Submit"} />
+            <PrimaryButton onClick={() => handleMovie()} text={id ? "Update" : "Submit"} />
           </div>
         </div>
       </section>

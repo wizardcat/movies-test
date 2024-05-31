@@ -2,9 +2,10 @@ import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import axios from 'axios';
 
 interface MovieData {
-  title: string;
-  publishingYear: number;
-  posterFile: File | undefined;
+  id: string;
+  title?: string;
+  publishingYear?: number;
+  posterFile?: File | undefined;
 }
 
 interface MovieResponse {
@@ -15,12 +16,12 @@ interface MovieResponse {
   poster: string;
 }
 
-const createMovie = async (movieData: Omit<MovieData, 'posterFile'> & { poster: string; userId: string }): Promise<MovieResponse> => {
-  const response = await axios.post('/api/v1/movies', movieData);
+const updateMovie = async (id: string, movieData: Omit<MovieData, 'posterFile'> & { poster: string }): Promise<MovieResponse> => {
+  const response = await axios.patch(`/api/v1/movies/${id}`, movieData);
   return response.data;
 };
 
-export const useCreateMovie = () => {
+export const useEditMovie = () => {
   const mutationOptions: UseMutationOptions<MovieResponse, Error, MovieData, unknown> = {
     mutationFn: async (movieData: MovieData) => {
       const userId = localStorage.getItem('userId');
@@ -28,11 +29,14 @@ export const useCreateMovie = () => {
         throw new Error('User ID not found in local storage');
       }
 
-      // Upload the poster image
-      const poster = await uploadPoster(movieData.posterFile);
+      // Upload the poster image if exists
+      let poster = '';
+      if (movieData.posterFile) {
+        poster = await uploadPoster(movieData.posterFile);
+      }
 
-      // Create the movie with the uploaded poster URL
-      return createMovie({ ...movieData, poster, userId });
+      // Update the movie with the new data and poster URL if available
+      return updateMovie(movieData.id, { ...movieData, poster });
     },
   };
 
@@ -40,8 +44,7 @@ export const useCreateMovie = () => {
 };
 
 // Helper function to upload poster
-const uploadPoster = async (file: File | undefined): Promise<string> => {
-	if (!file) return '';
+const uploadPoster = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append('file', file);
 
