@@ -8,9 +8,10 @@ import { useDropzone } from "react-dropzone";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SecondaryButton } from "../Buttons/SecondaryButton";
 import { useCreateMovie } from "@/hooks/api/mutations/useCreateMovie";
-import styles from "./movie.module.scss";
 import { useGetPoster } from "@/hooks/api/queries/useGetPoster";
 import { useGetMovie } from "@/hooks/api/queries/useGetMovie";
+import { useEditMovie } from "@/hooks/api/mutations/useEditMovie";
+import styles from "./movie.module.scss";
 
 export default function Movie({ id }: {id?: string}) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -18,6 +19,7 @@ export default function Movie({ id }: {id?: string}) {
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
   const { mutate: mutationForCreating } = useCreateMovie();
+  const { mutate: mutationForEditing } = useEditMovie();
   const { data: movieData } = useGetMovie(id);
   const { data: imageFromId } = useGetPoster(movieData?.poster || "");
 
@@ -34,19 +36,16 @@ export default function Movie({ id }: {id?: string}) {
     }
   }, [imageFromId, setImagePreview])
 
-  const handleCreateMovie = () => {
-    const movieData = {title, publishingYear: Number(publishingYear), posterFile: poster};
+  
 
-    mutationForCreating(movieData, {
-      onSuccess: (data) => {
-        console.log('Movie created successfully:', data);
-        // Do something on success, e.g., reset form or show success message
-      },
-      onError: (error) => {
-        console.error('Error creating movie:', error);
-        // Do something on error, e.g., show error message
-      },
-    });
+  const handleMovie = () => {
+    const movieDataCreation = {title, publishingYear: Number(publishingYear), posterFile: poster};
+    const movieDataEditing = {...movieDataCreation, id: id as string};
+    if (id) {
+      mutationForEditing(movieDataEditing);
+    } else {
+      mutationForCreating(movieDataCreation)
+    }
   };
   const router = useRouter();
   const { getRootProps, getInputProps } = useDropzone({
@@ -99,7 +98,7 @@ export default function Movie({ id }: {id?: string}) {
           </div>
           <div className={styles.buttons}>
             <SecondaryButton onClick={() => router.push("/movies")} text="Cancel" />
-            <PrimaryButton onClick={id ? () => {} : () => handleCreateMovie()} text={id ? "Update" : "Submit"} />
+            <PrimaryButton onClick={() => handleMovie()} text={id ? "Update" : "Submit"} />
           </div>
         </div>
       </section>
