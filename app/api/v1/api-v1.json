@@ -1,0 +1,570 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Movies Test API",
+    "version": "1.0.0",
+    "description": "API for managing movies"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/auth/sign-in": {
+      "post": {
+        "summary": "Sign in",
+        "operationId": "signIn",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User signed in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/sign-up": {
+      "post": {
+        "summary": "Sign up",
+        "operationId": "signUp",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User signed up successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies": {
+      "get": {
+        "summary": "Get movies",
+        "operationId": "getMovies",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movies found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movies"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movies not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create movie",
+        "operationId": "createMovie",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMovie"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Movie created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "get": {
+        "summary": "Get movie",
+        "description": "Get movie",
+        "operationId": "getMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Movie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update movie",
+        "operationId": "updateMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMovie"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Movie updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete movie",
+        "operationId": "deleteMovie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Movie ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie deleted successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/images": {
+      "post": {
+        "summary": "Upload image",
+        "operationId": "uploadImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get image",
+        "operationId": "getImage",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "query",
+            "description": "Image file name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Image found successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Image not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignIn": {
+        "type": "object",
+        "description": "Sign in data",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password"
+          }
+        }
+      },
+      "SignUp": {
+        "type": "object",
+        "description": "Sign up data",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "description": "User data",
+        "required": ["id", "email", "password"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email"
+          }
+        }
+      },
+      "CreateMovie": {
+        "type": "object",
+        "description": "Movie data for creation",
+        "required": ["userId", "title", "publishingYear", "poster"],
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Movie title"
+          },
+          "publishingYear": {
+            "type": "integer",
+            "description": "Movie publishing year"
+          },
+          "poster": {
+            "type": "string",
+            "description": "Movie poster file name"
+          }
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "description": "Movie data",
+        "required": ["id", "userId", "title", "publishingYear", "poster"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Movie ID"
+          },
+          "userId": {
+            "type": "string",
+            "description": "User ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Movie title"
+          },
+          "publishingYear": {
+            "type": "integer",
+            "description": "Movie publishing year"
+          },
+          "poster": {
+            "type": "string",
+            "description": "Movie poster file name"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Movie creation date"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Movie update date"
+          }
+        }
+      },
+      "Movies": {
+        "type": "object",
+        "description": "User's movies",
+        "required": [
+          "movies",
+          "totalPages",
+          "prevPage",
+          "nextPage",
+          "hasPreviousPage",
+          "hasNextPage"
+        ],
+        "properties": {
+          "movies": {
+            "type": "array",
+            "description": "List of movies",
+            "items": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total number of pages"
+          },
+          "prevPage": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Previous page number"
+          },
+          "nextPage": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Next page number"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indicates if there is a previous page"
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indicates if there is a next page"
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "description": "Image data",
+        "required": ["image"],
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Image file name"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "messages": {
+            "type": "string",
+            "description": "Error messages"
+          }
+        }
+      }
+    }
+  }
+}
