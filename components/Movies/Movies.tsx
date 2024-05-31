@@ -1,4 +1,5 @@
 'use client';
+import { useState } from "react";
 import useGetMovies from "@/hooks/api/queries/useGetMovies";
 import { useLogin } from "@/hooks/common/useLogin";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -7,14 +8,17 @@ import { useRouter } from 'next/navigation';
 import LogoutIcon from "../../app/logoutIcon.svg";
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { Pagination } from "../Pagination/Pagination";
-import { moviesList } from './mockedMoviesList';
 import styles from './movies.module.scss';
 
 export default function Movies() {
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const router = useRouter();
-  const { data } = useGetMovies();
+  const { data } = useGetMovies(10, currentPage);
   const { logout } = useLogin();
-  if (!data?.movies?.length) {
+  const movies = data?.movies;
+  const setNextPage = () => setCurrentPage(p => p + 1);
+  const setPrevPage = () => setCurrentPage(p => p - 1);
+  if (!movies?.length) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
@@ -35,7 +39,7 @@ export default function Movies() {
         </div>
       </section>
       <section className={styles.movies}>
-        {moviesList.map((m) => (
+        {movies.map((m: any) => (
           <div
             key={m.id}
             className={styles.moviesCard}
@@ -51,7 +55,13 @@ export default function Movies() {
           </div>
         ))}
       </section>
-      <Pagination className={styles.pagination} />
+      <Pagination
+        data={data}
+        setNextPage={setNextPage}
+        setPrevPage={setPrevPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </main>
   );
 }
