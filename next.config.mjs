@@ -18,14 +18,14 @@ const nextConfig = {
   },
   compiler: {
     styledComponents: true,
-  },
-  webpack: (config) => {
-    config.ignoreWarnings = [
-      { module: /node_modules\/swagger-jsdoc\/src\/utils\.js/ },
-      { file: /node_modules\/swagger-jsdoc\/src\/index\.js/ },
-    ];
+    webpack: (config) => {
+      config.ignoreWarnings = [
+        { module: /node_modules\/swagger-jsdoc\/src\/utils\.js/ },
+        { file: /node_modules\/swagger-jsdoc\/src\/index\.js/ },
+      ];
 
-    return config;
+      return config;
+    },
   },
 };
 
