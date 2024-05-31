@@ -86,15 +86,13 @@ export default function Movie({ id }: {id?: string}) {
       <section className={styles.dropzoneInputs}>
         <div className={styles.dropzoneWrapper} {...getRootProps()}>
           {imagePreview ? (
-            <div>
-              <Image
-                src={imagePreview}
-                alt="Preview"
-                className={styles.imagePreview}
-                width={266}
-                height={400}
-              />
-            </div>
+            <Image
+              src={imagePreview}
+              alt="Preview"
+              className={styles.imagePreview}
+              width={266}
+              height={400}
+            />
           ) : (
             <div className={styles.dropzoneText}>
               <UploadOutlined />
