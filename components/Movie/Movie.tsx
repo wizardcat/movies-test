@@ -50,10 +50,10 @@ export default function Movie({ id }: {id?: string}) {
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
-      return new File([u8arr], movieData?.poster || "", {type: "mime"});
+      return new File([u8arr], movieData?.poster || "", {type: mime});
     }
     
-    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: dataURLtoFile(imageFromId?.image)};
+    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: imageFromId?.image ? dataURLtoFile(imageFromId?.image) : poster};
     if (id) {
       mutationForEditing(movieDataEditing);
     } else {
