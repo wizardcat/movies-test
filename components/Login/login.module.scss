@@ -1,0 +1,35 @@
+@import '../../styles/base.scss';
+
+.loginWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  gap: 40px;
+  width: 100%;
+  @include for-mobile {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  h1 {
+    color: white;
+  }
+  form {
+    width: 300px;
+    @include for-mobile {
+      width: 100%;
+    }
+  }
+}
+
+
+.checkbox {
+  display: flex;
+  justify-content: center;
+  span {
+    font-family: $base-font;
+    font-size: $body-small;
+    color: #FFF;
+  }
+}

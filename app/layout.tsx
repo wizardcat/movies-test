@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from "next";
+import Image from "next/image";
+import '../styles/globals.scss';
+import bottomBackground from "./bottomBackground.svg";
+import bottomBackgroundMobile from "./bottomBackgroundMobile.svg";
+import ReactQueryProvider from "./Providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +18,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <link precedence="default" rel="preconnect" href="https://fonts.googleapis.com" />
+      <link precedence="default" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link precedence="default" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+      <body>
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>  
+        <div className="bottom-background-wrapper">
+          <Image
+            src={bottomBackground}
+            className="bottom-background-img"
+            alt="bottom background"
+            priority
+          />
+        </div>
+        <div className="bottom-background-wrapper-mobile">
+          <Image
+            src={bottomBackgroundMobile}
+            className="bottom-background-img"
+            alt="bottom background"
+            priority
+          />
+        </div>
+      </body>
     </html>
   );
 }
