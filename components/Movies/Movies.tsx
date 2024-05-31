@@ -12,10 +12,9 @@ import styles from './movies.module.scss';
 
 export default function Movies() {
   const router = useRouter();
-  const data = useGetMovies();
-  console.log(data)
+  const { data } = useGetMovies();
   const { logout } = useLogin();
-  if (!moviesList.length) {
+  if (!data.movies.length) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
