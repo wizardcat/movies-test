@@ -1,19 +1,20 @@
 'use client'
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 
 export default function Home() {
   const router = useRouter();
-  const userId = localStorage.getItem('userId');
-  const rememberUser = localStorage.getItem('rememberUser');
+
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const rememberUser = localStorage.getItem("rememberUser");
     if (userId && rememberUser) {
-      router.push('/movies');
+      router.push("/movies");
     } else {
-      router.push('/login');
+      router.push("/login");
     }
-  }, [userId, router]);
+  }, [router]);
 
   return null;
 };
