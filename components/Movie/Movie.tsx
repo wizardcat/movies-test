@@ -3,20 +3,36 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Input } from 'antd/lib';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SecondaryButton } from "../Buttons/SecondaryButton";
 import { useCreateMovie } from "@/hooks/api/mutations/useCreateMovie";
 import styles from "./movie.module.scss";
+import { useGetPoster } from "@/hooks/api/queries/useGetPoster";
+import { useGetMovie } from "@/hooks/api/queries/useGetMovie";
 
 export default function Movie({ id }: {id?: string}) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // const mutationForEditing = useEditMovie();
+  const [poster, setPoster] = useState<File | undefined>();
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
-  const [poster, setPoster] = useState<File | undefined>();
-  const { mutate: mutationForCreating, isPending, isError, error } = useCreateMovie();
+  const { mutate: mutationForCreating } = useCreateMovie();
+  const { data: movieData } = useGetMovie(id);
+  const { data: imageFromId } = useGetPoster(movieData?.poster || "");
+
+  useEffect(() => {
+    if (movieData?.title && movieData?.publishingYear) {
+      setPublishingYear(movieData.publishingYear)
+      setTitle(movieData.title);
+    }
+  }, [movieData?.id])
+
+  useEffect(() => {
+    if (imageFromId?.image && !imagePreview) {
+      setImagePreview(imageFromId.image);
+    }
+  }, [imageFromId, setImagePreview])
 
   const handleCreateMovie = () => {
     const movieData = {title, publishingYear: Number(publishingYear), posterFile: poster};
