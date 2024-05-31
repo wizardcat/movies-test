@@ -15,11 +15,11 @@ export default function Movie({ id }: {id?: string}) {
   // const mutationForEditing = useEditMovie();
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
-  const [poster, setPoster] = useState<string>('1234');
+  const [poster, setPoster] = useState<File | undefined>();
   const { mutate: mutationForCreating, isPending, isError, error } = useCreateMovie();
 
   const handleCreateMovie = () => {
-    const movieData = {title, publishingYear: Number(publishingYear), poster};
+    const movieData = {title, publishingYear: Number(publishingYear), posterFile: poster};
 
     mutationForCreating(movieData, {
       onSuccess: (data) => {
@@ -36,6 +36,7 @@ export default function Movie({ id }: {id?: string}) {
   const { getRootProps, getInputProps } = useDropzone({
     onDropAccepted: (files) => {
       const file = files[0];
+      setPoster(file);
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);

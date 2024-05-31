@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import LogoutIcon from "../../app/logoutIcon.svg";
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { Pagination } from "../Pagination/Pagination";
+import { PosterImage } from "./PosterImage";
 import styles from './movies.module.scss';
 
 export default function Movies() {
@@ -46,12 +47,7 @@ export default function Movies() {
             onClick={() => router.push("/movie/" + m.id)}
           >
             <div className={styles.poster}>
-              <Image 
-                src={"https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg"}
-                alt={m.title}
-                width={266}
-                height={400}
-              />
+              <PosterImage poster={m.poster} alt={m.title} />
             </div>
             <div className={styles.info}>
               <p>{m.title}</p>
