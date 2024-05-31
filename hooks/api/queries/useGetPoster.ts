@@ -7,7 +7,7 @@ interface ImageResponse {
 }
 
 const fetchImage = async (fileName: string): Promise<ImageResponse> => {
-  const response = await axios.get(`/api/v1/image?fileName=${fileName}`);
+  const response = await axios.get(`/api/v1/images?fileName=${fileName}`);
   return response.data;
 };
 
