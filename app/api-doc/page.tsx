@@ -1,8 +1,8 @@
 /* eslint-disable */
 "use client";
-import v1 from "@/app/api/v1/api-v1.json";
 import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
+import v1 from "./api-v1.json";
 
 export default function Page() {
   const spec = v1;
