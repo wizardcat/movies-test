@@ -1,0 +1,47 @@
+@import '../../styles/base.scss';
+
+.paginationWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: $body-regular;
+  line-height: 24px;
+  color: white;
+  z-index: 1;
+  position: relative;
+  transition: .2s;
+}
+.hiddenPaginationHandler {
+  visibility: hidden;
+}
+
+.pages {
+  display: flex;
+  gap: 8px;
+}
+
+.paginationHandler {
+  cursor: pointer;
+  user-select: none;
+}
+
+.currentPage {
+  background-color: #092C39;
+  user-select: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.currentPageActive {
+  @extend .currentPage;
+  background-color: #2BD17E;
+}
+

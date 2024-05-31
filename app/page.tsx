@@ -1,18 +1,19 @@
-// import Image from "next/image";
-// import { config } from './common/config';
-// import UploadForm from './components/UploadForm/UploadForm';
+'use client'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 export default function Home() {
-  // const bucketUri = config.AWS_S3.bucketUri;
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* <Image
-        src={`${bucketUri}/images/Screenshot+2024-05-26+200231.png`}
-        alt="logo"
-        width={200}
-        height={200}
-      ></Image>
-      <UploadForm /> */}
-    </main>
-  );
-}
+  const router = useRouter();
+  const userId = localStorage.getItem('userId');
+  const rememberUser = localStorage.getItem('rememberUser');
+  useEffect(() => {
+    if (userId && rememberUser) {
+      router.push('/movies');
+    } else {
+      router.push('/login');
+    }
+  }, [userId, router]);
+
+  return null;
+};

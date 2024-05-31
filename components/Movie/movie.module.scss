@@ -1,0 +1,112 @@
+@import '../../styles/base.scss';
+
+.movieWrapper {
+  padding: 120px;
+  @include for-mobile {
+    padding: 80px 24px;
+  }
+  h2 {
+    color: white;
+  }
+}
+
+.dropzoneInputs {
+  margin-top: 120px;
+  display: flex;
+  gap: 120px;
+  @include for-mobile {
+    margin-top: 24px;
+    gap: 40px;
+    flex-direction: column;
+  }
+}
+
+.dropzoneWrapper {
+  height: 55vh;
+  width: 29vw;
+  border-radius: 10px;
+  border: 2px dashed white;
+  background-color: #224957;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include for-mobile {
+    height: 50vh;
+    width: 100%;
+  }
+  img {
+    border-radius: 10px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+.dropzoneText {
+  color: white;
+  font-size: $body-small;
+  line-height: 24px;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+  @include for-mobile {
+    gap: 16px;
+    min-width: 100%;
+  }
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  input:last-child {
+    width: 60%;
+  }
+  @include for-mobile {
+    display: none;
+  }
+}
+
+.inputsMobile {
+  display: none;
+  @include for-mobile {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+.inputsWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  gap: 64px;
+  @include for-mobile {
+    width: 100%;
+    gap: 0;
+  }
+}
+
+.dropzoneHintDesktop {
+  @include for-mobile {
+    display: none;
+  }
+}
+.dropzoneHintMobile {
+  display: none;
+  @include for-mobile {
+    display: unset;
+  }
+}
