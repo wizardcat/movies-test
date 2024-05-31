@@ -8,15 +8,20 @@ interface movieRouteContext {
   };
 }
 
-async function findMovieById(id: string) {
-
-  if (!id) {
-    return {
+const checkParams = (params: movieRouteContext["params"]) => {
+  for (const param in params) {
+    if (!params[param as keyof movieRouteContext["params"]]) {
+      return {
         code: "missing_query_param",
-        messages: "Query param id is required",
-      }
+        messages: `Query param ${param} is required`,
+      };
+    }
   }
 
+  return { code: "success" };
+};
+
+async function findMovieById(id: string) {
   const movie = await prisma.movies.findUnique({
     where: {
       id,
@@ -25,26 +30,37 @@ async function findMovieById(id: string) {
 
   if (!movie) {
     return {
-        code: "not_found",
-        messages: "Movie not found",
-      }
-  
+      code: "not_found",
+      messages: "Movie not found",
+    };
   }
 
   return movie;
 }
 
 export async function GET(req: Request, { params }: movieRouteContext) {
+  const isCheckParams = checkParams(params);
+
+  if (isCheckParams.code !== "success") return NextResponse.json(isCheckParams, { status: 400 });
+
   const { id } = params;
 
   const findMovie = await findMovieById(id);
 
-  return NextResponse.json(findMovie);
+  const status = ("code" in findMovie && findMovie.code) === "not_found" ? 404 : 200;
+
+  return NextResponse.json(findMovie, {
+    status,
+  });
 }
 
-
 export async function PATCH(req: Request, { params }: movieRouteContext) {
+  const isCheckParams = checkParams(params);
+
+  if (isCheckParams.code !== "success") return NextResponse.json(isCheckParams, { status: 400 });
+
   const { id } = params;
+
   const bodyRaw = await req.json();
   const validateBody = updateMovieDto.safeParse(bodyRaw);
 
@@ -69,6 +85,10 @@ export async function PATCH(req: Request, { params }: movieRouteContext) {
 }
 
 export async function DELETE(req: Request, { params }: movieRouteContext) {
+  const isCheckParams = checkParams(params);
+
+  if (isCheckParams.code !== "success") return NextResponse.json(isCheckParams, { status: 400 });
+
   const { id } = params;
 
   const findMovie = await findMovieById(id);

@@ -37,7 +37,10 @@ export async function POST(req: Request) {
     const file = formData.get("file");
 
     if (!(file instanceof Blob)) {
-      return NextResponse.json({ error: "File is required." }, { status: 400 });
+      return NextResponse.json(
+        { code: "not_found", message: "File is required." },
+        { status: 400 },
+      );
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -53,7 +56,14 @@ export async function GET(req: Request) {
   const fileName = searchParams.get("fileName");
 
   if (!fileName) {
-    return NextResponse.json({ error: "Query param fileName is required." }, { status: 400 });
+    return NextResponse.json(
+      {
+        code: "missing_query_param",
+        field: "fileName",
+        message: "Query param fileName is required.",
+      },
+      { status: 400 },
+    );
   }
 
   const params = {

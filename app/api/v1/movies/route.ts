@@ -68,6 +68,10 @@ export async function GET(req: Request) {
     take: limit,
   });
 
+  if (!movies.length) {
+    return NextResponse.json({ code: "not_found", message: "Movies not found." }, { status: 404 });
+  }
+  
   const totalMovies = await prisma.movies.count({
     where: {
       userId,
