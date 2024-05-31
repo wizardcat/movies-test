@@ -19,17 +19,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link
-        rel='preload'
-        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        as='style'
-      />
-      <link  rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
       <body>
         <ReactQueryProvider>{children}</ReactQueryProvider>
         <div className="bottom-background-wrapper">

@@ -1,4 +1,5 @@
 'use client';
+import { useState } from "react";
 import useGetMovies from "@/hooks/api/queries/useGetMovies";
 import { useLogin } from "@/hooks/common/useLogin";
 import { PlusCircleOutlined } from "@ant-design/icons";
@@ -7,15 +8,17 @@ import { useRouter } from 'next/navigation';
 import LogoutIcon from "../../app/logoutIcon.svg";
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { Pagination } from "../Pagination/Pagination";
-import { moviesList } from './mockedMoviesList';
 import styles from './movies.module.scss';
 
 export default function Movies() {
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const router = useRouter();
-  const data = useGetMovies();
-  console.log(data)
+  const { data } = useGetMovies(10, currentPage);
   const { logout } = useLogin();
-  if (!moviesList.length) {
+  const movies = data?.movies;
+  const setNextPage = () => setCurrentPage(p => p + 1);
+  const setPrevPage = () => setCurrentPage(p => p - 1);
+  if (!movies?.length) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
@@ -36,23 +39,34 @@ export default function Movies() {
         </div>
       </section>
       <section className={styles.movies}>
-        {moviesList.map((m) => (
+        {movies.map((m: any) => (
           <div
             key={m.id}
             className={styles.moviesCard}
             onClick={() => router.push("/movie/" + m.id)}
           >
             <div className={styles.poster}>
-              <Image src={m.poster} alt={m.name} width={266} height={400} />
+              <Image 
+                src={"https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg"}
+                alt={m.title}
+                width={266}
+                height={400}
+              />
             </div>
             <div className={styles.info}>
-              <p>{m.name}</p>
-              <p>{m.year}</p>
+              <p>{m.title}</p>
+              <p>{m.publishingYear}</p>
             </div>
           </div>
         ))}
       </section>
-      <Pagination className={styles.pagination} />
+      <Pagination
+        data={data}
+        setNextPage={setNextPage}
+        setPrevPage={setPrevPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </main>
   );
 }

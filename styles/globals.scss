@@ -1,5 +1,6 @@
 @import 'reset';
 @import 'base';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 html,
 body {
@@ -111,7 +112,7 @@ h6 {
   background-color: $color-input !important;
   border-color: $color-input !important;
 }
-.input {
+.antd-input {
   min-height: 45px;
   background-color: $color-input !important;
   outline: none;

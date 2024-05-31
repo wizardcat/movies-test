@@ -1,5 +1,5 @@
 'use client';
-import { Input as AntdInput, Checkbox, Form } from 'antd/lib';
+import { Checkbox, Form, Input } from 'antd/lib';
 import { useEffect, useState } from 'react';
 import { useLogin } from '../../hooks/common/useLogin';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
@@ -22,14 +22,14 @@ export default function Login() {
         onFinish={handleFinish}
       >
         <Form.Item name="email" rules={emailRules}>
-          <AntdInput
-            className="input"
+          <Input
+            className="antd-input"
             placeholder="Email"
           />
         </Form.Item>
         <Form.Item name="password" rules={passwordRules}>
-          <AntdInput
-            className="input"
+          <Input
+            className="antd-input"
             type="password"
             placeholder="Password"
           />
