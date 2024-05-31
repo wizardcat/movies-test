@@ -43,16 +43,17 @@ export default function Movie({ id }: {id?: string}) {
 
     const dataURLtoFile = (dataUrl: any) => {
       const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
       const bstr = atob(arr[1]);
       let n = bstr.length;
       const u8arr = new Uint8Array(n);
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
-      return new File([u8arr], movieData?.poster || "");
+      return new File([u8arr], movieData?.poster || "", {type: mime});
     }
     
-    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: dataURLtoFile(imageFromId?.image)};
+    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: imageFromId?.image ? dataURLtoFile(imageFromId?.image) : poster};
     if (id) {
       mutationForEditing(movieDataEditing);
     } else {
