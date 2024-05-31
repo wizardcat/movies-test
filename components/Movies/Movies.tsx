@@ -46,11 +46,16 @@ export default function Movies() {
             onClick={() => router.push("/movie/" + m.id)}
           >
             <div className={styles.poster}>
-              <Image src={m.poster} alt={m.name} width={266} height={400} />
+              <Image 
+                src={"https://m.media-amazon.com/images/I/81p+xe8cbnL._AC_SY679_.jpg"}
+                alt={m.title}
+                width={266}
+                height={400}
+              />
             </div>
             <div className={styles.info}>
-              <p>{m.name}</p>
-              <p>{m.year}</p>
+              <p>{m.title}</p>
+              <p>{m.publishingYear}</p>
             </div>
           </div>
         ))}
