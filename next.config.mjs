@@ -29,8 +29,10 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.ignoreWarnings = [
-      { module: /node_modules\/swagger-client\/src\/utils\.js/ },
-      { file: /node_modules\/swagger-client\/src\/index\.js/ },
+      { module: /node_modules\/swagger-client\// },
+      { file: /node_modules\/swagger-client\// },
+      { module: /node_modules\/swagger-ui-react\// },
+      { file: /node_modules\/swagger-ui-react\// },
     ];
 
     return config;
