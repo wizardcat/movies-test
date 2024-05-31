@@ -9,7 +9,7 @@ interface ImageResponse {
 
 const fetchImage = async (fileName: string): Promise<ImageResponse> => {
   const bucketUri = config.AWS_S3.bucketUri;
-  const response = await axios.get(`${bucketUri}/images?fileName=${fileName}`);
+  const response = await axios.get(`${bucketUri}/images/${fileName}`);
   return response.data;
 };
 
