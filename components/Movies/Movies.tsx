@@ -14,7 +14,7 @@ export default function Movies() {
   const router = useRouter();
   const { data } = useGetMovies();
   const { logout } = useLogin();
-  if (!data.movies.length) {
+  if (!data?.movies?.length) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
