@@ -1,14 +1,14 @@
 'use client';
-import Image from "next/image";
-import styles from './movies.module.scss';
-import { PrimaryButton } from '../Buttons/PrimaryButton';
-import { moviesList } from './mockedMoviesList';
-import { PlusCircleOutlined } from "@ant-design/icons"
-import LogoutIcon from "../../app/logoutIcon.svg";
-import { Pagination } from "../Pagination/Pagination";
-import { useRouter } from 'next/navigation';
-import { useLogin } from "@/hooks/common/useLogin";
 import useGetMovies from "@/hooks/api/queries/useGetMovies";
+import { useLogin } from "@/hooks/common/useLogin";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import { useRouter } from 'next/navigation';
+import LogoutIcon from "../../app/logoutIcon.svg";
+import { PrimaryButton } from '../Buttons/PrimaryButton';
+import { Pagination } from "../Pagination/Pagination";
+import { moviesList } from './mockedMoviesList';
+import styles from './movies.module.scss';
 
 export default function Movies() {
   const router = useRouter();
@@ -28,22 +28,22 @@ export default function Movies() {
       <section className={styles.topSectionWrapper}>
         <div className={styles.titleWrapper}>
           <h2>My Movies</h2>
-          <PlusCircleOutlined onClick={() => router.push('/movie')} />
+          <PlusCircleOutlined onClick={() => router.push("/movie")} />
         </div>
         <div className={styles.logoutWrapper} onClick={() => logout()}>
           <span>Logout</span>
-          <Image
-            src={LogoutIcon}
-            alt="logout"
-            priority
-          />
+          <Image src={LogoutIcon} alt="logout" priority width={24} height={24} />
         </div>
       </section>
       <section className={styles.movies}>
         {moviesList.map((m) => (
-          <div key={m.id} className={styles.moviesCard} onClick={() => router.push('/movie/' + m.id)}>
+          <div
+            key={m.id}
+            className={styles.moviesCard}
+            onClick={() => router.push("/movie/" + m.id)}
+          >
             <div className={styles.poster}>
-              <img src={m.poster} alt={m.name} />
+              <Image src={m.poster} alt={m.name} width={266} height={400} />
             </div>
             <div className={styles.info}>
               <p>{m.name}</p>

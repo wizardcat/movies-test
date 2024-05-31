@@ -1,10 +1,11 @@
+/* eslint-disable @next/next/no-page-custom-font */
 
 import type { Metadata } from "next";
 import Image from "next/image";
 import '../styles/globals.scss';
+import ReactQueryProvider from "./Providers";
 import bottomBackground from "./bottomBackground.svg";
 import bottomBackgroundMobile from "./bottomBackgroundMobile.svg";
-import ReactQueryProvider from "./Providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,13 +19,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <link precedence="default" rel="preconnect" href="https://fonts.googleapis.com" />
-      <link precedence="default" rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link precedence="default" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+      <link
+        rel='preload'
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        as='style'
+      />
+      <link  rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossOrigin="anonymous"
+      />
       <body>
-        <ReactQueryProvider>
-          {children}
-        </ReactQueryProvider>  
+        <ReactQueryProvider>{children}</ReactQueryProvider>
         <div className="bottom-background-wrapper">
           <Image
             src={bottomBackground}

@@ -1,12 +1,13 @@
 'use client';
 import { UploadOutlined } from "@ant-design/icons";
+import { Input } from 'antd/lib';
+import Image from 'next/image';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SecondaryButton } from "../Buttons/SecondaryButton";
-import { Checkbox, Form, Input } from 'antd/lib';
 import styles from "./movie.module.scss";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Movie({ id }: {id?: string}) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -35,12 +36,20 @@ export default function Movie({ id }: {id?: string}) {
       <section className={styles.dropzoneInputs}>
         <div className={styles.dropzoneWrapper} {...getRootProps()}>
           {imagePreview ? (
-            <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
+            <div>
+              <Image
+                src={imagePreview}
+                alt="Preview"
+                className={styles.imagePreview}
+                width={266}
+                height={400}
+              />
+            </div>
           ) : (
             <div className={styles.dropzoneText}>
               <UploadOutlined />
-              <p className={styles.dropzoneHintDesktop}>Drop {id ? 'another' : 'an'} image here</p>
-              <p className={styles.dropzoneHintMobile}>Upload {id ? 'another' : 'an'} image here</p>
+              <p className={styles.dropzoneHintDesktop}>Drop {id ? "another" : "an"} image here</p>
+              <p className={styles.dropzoneHintMobile}>Upload {id ? "another" : "an"} image here</p>
             </div>
           )}
           <input {...getInputProps()} />
@@ -50,8 +59,8 @@ export default function Movie({ id }: {id?: string}) {
             <Input className="input" placeholder="Title" />
             <Input className="input" placeholder="Publishing year" />
           </div>
-          <div className={styles.buttons} >
-            <SecondaryButton onClick={() => router.push('/movies')} text="Cancel" />
+          <div className={styles.buttons}>
+            <SecondaryButton onClick={() => router.push("/movies")} text="Cancel" />
             <PrimaryButton text={id ? "Update" : "Submit"} />
           </div>
         </div>

@@ -8,11 +8,17 @@ const nextConfig = {
         port: "",
         pathname: "/images/**",
       },
+      {
+        protocol: "https",
+        hostname: "m.media-amazon.com",
+        port: "",
+        pathname: "/images/I/**",
+      },
     ],
   },
   compiler: {
-    styledComponents: true
-  }
+    styledComponents: true,
+  },
 };
 
 export default nextConfig;
