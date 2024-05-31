@@ -30,8 +30,8 @@ export default function Movie({ id }: {id?: string}) {
     <main className={styles.movieWrapper}>
       <h2>{id ? "Edit" : "Create a new movie"}</h2>
       <div className={styles.inputsMobile}>
-        <Input placeholder="Title" />
-        <Input placeholder="Publishing year" />
+        <Input className="antd-input" placeholder="Title" />
+        <Input className="antd-input" placeholder="Publishing year" />
       </div>
       <section className={styles.dropzoneInputs}>
         <div className={styles.dropzoneWrapper} {...getRootProps()}>
@@ -56,8 +56,8 @@ export default function Movie({ id }: {id?: string}) {
         </div>
         <div className={styles.inputsWrapper}>
           <div className={styles.inputs}>
-            <Input className="input" placeholder="Title" />
-            <Input className="input" placeholder="Publishing year" />
+            <Input className="antd-input" placeholder="Title" />
+            <Input className="antd-input" placeholder="Publishing year" />
           </div>
           <div className={styles.buttons}>
             <SecondaryButton onClick={() => router.push("/movies")} text="Cancel" />
