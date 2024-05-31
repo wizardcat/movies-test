@@ -6,7 +6,6 @@ export const Pagination = ({
   setPrevPage = () => {},
   setNextPage = () => {},
   setCurrentPage = (i: number) => {}, 
-  className = "",
   data = {} as any,
 }) => {
   const totalPages = data?.totalPages;
