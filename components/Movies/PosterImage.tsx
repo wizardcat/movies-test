@@ -9,7 +9,7 @@ export const PosterImage = ({ poster = "", alt = "" }) => {
     <>
       {data && (
         <Image 
-          src={`data:image/jpg;base64,${data}`}
+          src={data}
           alt={alt}
           width={266}
           height={400}

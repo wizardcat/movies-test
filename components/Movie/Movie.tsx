@@ -31,8 +31,8 @@ export default function Movie({ id }: {id?: string}) {
   }, [movieData?.id])
 
   useEffect(() => {
-    if (imageFromId?.image && !imagePreview) {
-      setImagePreview(imageFromId.image);
+    if (imageFromId && !imagePreview) {
+      setImagePreview(imageFromId);
     }
   }, [imageFromId, setImagePreview])
 
@@ -53,7 +53,7 @@ export default function Movie({ id }: {id?: string}) {
       return new File([u8arr], movieData?.poster || "", {type: mime});
     }
     
-    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: imageFromId?.image ? dataURLtoFile(imageFromId?.image) : poster};
+    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: imageFromId ? dataURLtoFile(imageFromId) : poster};
     if (id) {
       mutationForEditing(movieDataEditing);
     } else {
