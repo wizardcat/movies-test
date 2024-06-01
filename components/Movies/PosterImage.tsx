@@ -5,12 +5,11 @@ import Image from "next/image";
 
 export const PosterImage = ({ poster = "", alt = "" }) => {
   const { data } = useGetPoster(poster);
-  console.log(data)
   return (
     <>
-      {data?.image && (
+      {data && (
         <Image 
-          src={data.image}
+          src={`data:image/jpg;base64,${data}`}
           alt={alt}
           width={266}
           height={400}
