@@ -32,11 +32,12 @@ export default function Movie({ id }: {id?: string}) {
   const [poster, setPoster] = useState<File | undefined>();
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
-  const { mutate: mutationForCreating } = useCreateMovie();
-  const { mutate: mutationForEditing } = useEditMovie();
+  const { mutate: mutationForCreating, isPending: creatingPending} = useCreateMovie();
+  const { mutate: mutationForEditing, isPending: editingPending} = useEditMovie();
   const { data: movieData } = useGetMovie(id);
   const { data: imageFromId } = useGetPoster(movieData?.poster || "");
   const base64toFileConverted = useMemo(() => dataURLtoFile(imageFromId), [imageFromId])
+  const isPending = creatingPending || editingPending;
   useEffect(() => {
     if (movieData?.title && movieData?.publishingYear) {
       setPublishingYear(movieData.publishingYear)
@@ -110,7 +111,7 @@ export default function Movie({ id }: {id?: string}) {
           </div>
           <div className={styles.buttons}>
             <SecondaryButton onClick={() => router.push("/movies")} text="Cancel" />
-            <PrimaryButton onClick={() => handleMovie()} text={id ? "Update" : "Submit"} />
+            <PrimaryButton loading={isPending} onClick={() => handleMovie()} text={id ? "Update" : "Submit"} />
           </div>
         </div>
       </section>
