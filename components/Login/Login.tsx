@@ -7,7 +7,7 @@ import styles from './login.module.scss';
 
 
 export default function Login() {
-  const { emailRules, passwordRules, handleFinish } = useLogin();
+  const { emailRules, passwordRules, handleFinish, mutation } = useLogin();
   const rememberUserFromLS = typeof window !== 'undefined' ? localStorage.getItem("rememberUser") === "true" : false;
   const [rememberUser, setRememberUser] = useState<boolean>(rememberUserFromLS || false);
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function Login() {
           </Checkbox>
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
-          <PrimaryButton text={"Log in"} />
+          <PrimaryButton text={"Log in"} loading={mutation.isPending} />
         </Form.Item>
       </Form>
     </main>
