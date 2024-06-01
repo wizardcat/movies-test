@@ -27,19 +27,19 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.(js|mjs|jsx|ts|tsx)$/,
-      enforce: "pre",
-      include: [/node_modules\/swagger-client/, /node_modules\/swagger-ui-react/],
-      use: [
-        {
-          loader: "ignore-loader",
-        },
-      ],
-    });
-    return config;
-  },
+  // webpack: (config) => {
+  //   config.module.rules.push({
+  //     test: /\.(js|mjs|jsx|ts|tsx)$/,
+  //     enforce: "pre",
+  //     include: [/node_modules\/swagger-client/, /node_modules\/swagger-ui-react/],
+  //     use: [
+  //       {
+  //         loader: "ignore-loader",
+  //       },
+  //     ],
+  //   });
+  //   return config;
+  // },
   async headers() {
     return [
       {
