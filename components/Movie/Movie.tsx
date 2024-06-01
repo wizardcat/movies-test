@@ -3,7 +3,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Input } from 'antd/lib';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { PrimaryButton } from "../Buttons/PrimaryButton";
 import { SecondaryButton } from "../Buttons/SecondaryButton";
@@ -12,6 +12,20 @@ import { useGetPoster } from "@/hooks/api/queries/useGetPoster";
 import { useGetMovie } from "@/hooks/api/queries/useGetMovie";
 import { useEditMovie } from "@/hooks/api/mutations/useEditMovie";
 import styles from "./movie.module.scss";
+
+function dataURLtoFile(dataurl: string | undefined) {
+  if (dataurl) {
+    let arr = dataurl.split(',')
+    let mime = arr[0].match(/:(.*?);/)?.[1]
+    let bstr = atob(arr[arr.length - 1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], "", {type:mime});
+  }
+}
 
 export default function Movie({ id }: {id?: string}) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -22,7 +36,7 @@ export default function Movie({ id }: {id?: string}) {
   const { mutate: mutationForEditing } = useEditMovie();
   const { data: movieData } = useGetMovie(id);
   const { data: imageFromId } = useGetPoster(movieData?.poster || "");
-
+  const base64toFileConverted = useMemo(() => dataURLtoFile(imageFromId), [imageFromId])
   useEffect(() => {
     if (movieData?.title && movieData?.publishingYear) {
       setPublishingYear(movieData.publishingYear)
@@ -40,20 +54,7 @@ export default function Movie({ id }: {id?: string}) {
 
   const handleMovie = () => {
     const movieDataCreation = {title, publishingYear: Number(publishingYear), posterFile: poster};
-
-    const dataURLtoFile = (dataUrl: any) => {
-      const arr = dataUrl.split(',');
-      const mime = arr[0].match(/:(.*?);/)[1];
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], movieData?.poster || "", {type: mime});
-    }
-    
-    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: imageFromId ? dataURLtoFile(imageFromId) : poster};
+    const movieDataEditing = {...movieDataCreation, id: id as string, posterFile: poster || base64toFileConverted};
     if (id) {
       mutationForEditing(movieDataEditing);
     } else {

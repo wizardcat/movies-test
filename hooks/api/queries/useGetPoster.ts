@@ -2,11 +2,6 @@ import { config } from "@/app/common/config";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import axios from "axios";
 
-interface ImageResponse {
-  success: boolean;
-  image: string; // Base64 encoded image
-}
-
 const fetchImage = async (fileName: string): Promise<string> => {
   const bucketUri = config.AWS_S3.bucketUri;
   const response = await axios.get(`${bucketUri}/images/${fileName}`, {
