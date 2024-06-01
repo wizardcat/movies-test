@@ -1,16 +1,16 @@
 'use client';
-import { useState } from "react";
 import useGetMovies from "@/hooks/api/queries/useGetMovies";
 import { useLogin } from "@/hooks/common/useLogin";
+import LogoutIcon from "@/public/images/logoutIcon.svg";
 import { PlusCircleOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import LogoutIcon from "../../app/logoutIcon.svg";
+import { useState } from "react";
 import { PrimaryButton } from '../Buttons/PrimaryButton';
+import Loading from "../Loading/Loading";
 import { Pagination } from "../Pagination/Pagination";
 import { PosterImage } from "./PosterImage";
 import styles from './movies.module.scss';
-import Loading from "../Loading/Loading";
 
 export default function Movies() {
   const [currentPage, setCurrentPage] = useState<number>(1)

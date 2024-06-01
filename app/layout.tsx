@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-page-custom-font */
 
+import bottomBackground from "@/public/images/bottomBackground.svg";
+import bottomBackgroundMobile from "@/public/images/bottomBackgroundMobile.svg";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import '../styles/globals.scss';
 import ReactQueryProvider from "./Providers";
-import bottomBackground from "./bottomBackground.svg";
-import bottomBackgroundMobile from "./bottomBackgroundMobile.svg";
 
 export const metadata: Metadata = {
   title: "Create Next App",
