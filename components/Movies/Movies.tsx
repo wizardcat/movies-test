@@ -14,12 +14,19 @@ import styles from './movies.module.scss';
 export default function Movies() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const router = useRouter();
-  const { data } = useGetMovies(10, currentPage);
+  const { data, isPending } = useGetMovies(10, currentPage);
   const { logout } = useLogin();
   const movies = data?.movies;
   const setNextPage = () => setCurrentPage(p => p + 1);
   const setPrevPage = () => setCurrentPage(p => p - 1);
-  if (!movies?.length) {
+  if (isPending) {
+    return (
+      <main className={styles.noMoviesWrapper}>
+        <h2>Loading...</h2>
+      </main>
+    )
+  }
+  if (!movies?.length && !isPending) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
