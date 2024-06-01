@@ -10,6 +10,7 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { Pagination } from "../Pagination/Pagination";
 import { PosterImage } from "./PosterImage";
 import styles from './movies.module.scss';
+import Loading from "../Loading/Loading";
 
 export default function Movies() {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -22,7 +23,7 @@ export default function Movies() {
   if (isPending) {
     return (
       <main className={styles.noMoviesWrapper}>
-        <h2>Loading...</h2>
+        <Loading />
       </main>
     )
   }
