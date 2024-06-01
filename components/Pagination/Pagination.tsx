@@ -12,6 +12,10 @@ export const Pagination = ({
   const hasPreviousPage = data?.hasPreviousPage;
   const hasNextPage = data?.hasNextPage;
 
+  if (totalPages === 1) {
+    return null;
+  }
+
   return (
     <div className={styles.paginationWrapper}>
       <div 
