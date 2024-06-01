@@ -2,6 +2,9 @@
 
 A simple web app built with Next.js to display a list of movies.
 
+## API Doc is accessable by link
+https://localhost:3000/api-doc
+
 ## Getting Started
 
 First, run the development server:
