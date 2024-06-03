@@ -23,6 +23,7 @@ function dataURLtoFile(dataurl: string | undefined) {
 export const useMovie = (id?: string) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [poster, setPoster] = useState<File | undefined>();
+  const [posterFileName, setPosterFileName] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [publishingYear, setPublishingYear] = useState<number>();
   const { mutate: mutationForCreating, isPending: creatingPending } = useCreateMovie();
@@ -33,11 +34,13 @@ export const useMovie = (id?: string) => {
   const isPending = creatingPending || editingPending;
 
   useEffect(() => {
+    
     if (movieData?.title && movieData?.publishingYear) {
       setPublishingYear(movieData.publishingYear);
       setTitle(movieData.title);
+      setPosterFileName(movieData.poster);
     }
-  }, [movieData?.id]);
+  }, [movieData?.id, movieData?.publishingYear, movieData?.title, movieData?.poster]);
 
   useEffect(() => {
     if (imageFromId && !imagePreview) {
@@ -51,6 +54,7 @@ export const useMovie = (id?: string) => {
       ...movieDataCreation,
       id: id as string,
       posterFile: poster || base64toFileConverted,
+      posterFileName,
     };
     if (id) {
       mutationForEditing(movieDataEditing);
