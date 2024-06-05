@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { PrimaryButton } from '../Buttons/PrimaryButton/primary-button.component';
 
 import { Loading } from '../Loading/loading.component';
-import { Pagination } from '../Pagination/Pagination';
+import { Pagination } from '../Pagination/pagination.component';
 import styles from './movies.module.scss';
 import { PosterImage } from './poster-image.component';
 import { useMovies } from './use-movies.hook';
