@@ -1,5 +1,5 @@
 // import bcrypt from "bcrypt";
-import { prisma } from "@/app/common/prisma";
+import { prisma } from "@/common/prisma";
 import { NextResponse } from "next/server";
 import { signUpDto } from "./dto";
 

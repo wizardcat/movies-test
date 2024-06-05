@@ -1,4 +1,4 @@
-import { config } from "@/app/common/config";
+import { config } from "@/common/config";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 

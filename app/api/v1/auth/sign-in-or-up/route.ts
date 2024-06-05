@@ -1,4 +1,4 @@
-import { prisma } from '@/app/common/prisma';
+import { prisma } from '@/common/prisma';
 import { NextResponse } from "next/server";
 import { signInDto } from "../sign-in/dto";
 import { signUpDto } from "../sign-up/dto";
