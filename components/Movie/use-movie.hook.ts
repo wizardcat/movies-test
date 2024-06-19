@@ -34,7 +34,6 @@ export const useMovie = (id?: string) => {
   const isPending = creatingPending || editingPending;
 
   useEffect(() => {
-    
     if (movieData?.title && movieData?.publishingYear) {
       setPublishingYear(movieData.publishingYear);
       setTitle(movieData.title);
@@ -46,20 +45,21 @@ export const useMovie = (id?: string) => {
     if (imageFromId && !imagePreview) {
       setImagePreview(imageFromId);
     }
-  }, [imageFromId, setImagePreview]);
+  }, [imageFromId, imagePreview, setImagePreview]);
 
   const handleMovieClick = () => {
-    const movieDataCreation = { title, publishingYear: Number(publishingYear), posterFile: poster };
-    const movieDataEditing = {
-      ...movieDataCreation,
-      id: id as string,
-      posterFile: poster || base64toFileConverted,
-      posterFileName,
-    };
+    const movieData = { title, publishingYear: Number(publishingYear), posterFile: poster };
     if (id) {
+      const movieDataEditing = {
+        ...movieData,
+        id,
+        posterFile: poster || base64toFileConverted,
+        posterFileName,
+      };
+
       mutationForEditing(movieDataEditing);
     } else {
-      mutationForCreating(movieDataCreation);
+      mutationForCreating(movieData);
     }
   };
 

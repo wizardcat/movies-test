@@ -1,5 +1,7 @@
-// import bcrypt from "bcrypt";
+import { sendVerifyEmail } from '@/common/emails';
 import { prisma } from "@/common/prisma";
+import { AuthProvider } from '@prisma/client';
+import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { signUpDto } from "./dto";
 
@@ -13,13 +15,16 @@ export async function POST(req: Request) {
     });
   }
 
-  const { email, password } = validateBody.data;
+  const { email, password, username } = validateBody.data;
 
   const existingUser = await prisma.users.findFirst({
     where: {
       OR: [
         {
           email,
+        },
+        {
+          username,
         },
       ],
     },
@@ -40,14 +45,30 @@ export async function POST(req: Request) {
   const user = await prisma.users.create({
     data: {
       email,
-      password,
+      username,
     },
   });
 
-    const response = {
-      id: user.id,
-      email: user.email,
-  };
   
-  return NextResponse.json(response);
+  const saltRounds = 10;
+  const accessToken = await bcrypt.hash(password, saltRounds);
+
+  await prisma.credentials.create({
+    data: {
+      accessToken,
+      userId: user.id,
+      provider: AuthProvider.EMAIL,
+    },
+  });
+
+  const verifyEmailToken = await prisma.verifyEmailTokens.create({
+    data: {
+      userId: user.id,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+    },
+  });
+
+  await sendVerifyEmail(email, verifyEmailToken.id);
+  
+  return NextResponse.json(user);
 }
