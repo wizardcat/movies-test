@@ -1,4 +1,4 @@
-import { config } from "@/app/common/config";
+import { config } from "@/common/config";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import axios from "axios";
 

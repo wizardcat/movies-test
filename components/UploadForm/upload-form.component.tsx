@@ -1,6 +1,6 @@
 "use client";
 
-import { useUploadForm } from './useUploadForm';
+import { useUploadForm } from './use-upload-form.hook';
 
 const UploadForm = () => {
   const { file, handleFileChange, handleSubmit, uploading } = useUploadForm();

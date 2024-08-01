@@ -6,6 +6,7 @@ interface MovieData {
   title?: string;
   publishingYear?: number;
   posterFile?: File | undefined;
+  posterFileName?: string;
 }
 
 interface MovieResponse {
@@ -30,7 +31,7 @@ export const useEditMovie = () => {
       }
 
       // Upload the poster image if exists
-      let poster = '';
+      let poster = movieData.posterFileName||'';
       if (movieData.posterFile) {
         poster = await uploadPoster(movieData.posterFile);
       }

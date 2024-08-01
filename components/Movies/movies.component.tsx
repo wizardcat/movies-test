@@ -1,46 +1,51 @@
 'use client';
-import useGetMovies from "@/hooks/api/queries/useGetMovies";
-import { useLogin } from "@/hooks/common/useLogin";
-import LogoutIcon from "@/public/images/logoutIcon.svg";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import Image from "next/image";
-import { useRouter } from 'next/navigation';
-import { useState } from "react";
-import { PrimaryButton } from '../Buttons/PrimaryButton';
-import Loading from "../Loading/Loading";
-import { Pagination } from "../Pagination/Pagination";
-import { PosterImage } from "./PosterImage";
-import styles from './movies.module.scss';
+import LogoutIcon from '@/public/images/logoutIcon.svg';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import { PrimaryButton } from '../Buttons/PrimaryButton/primary-button.component';
 
-export default function Movies() {
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const router = useRouter();
-  const { data, isPending } = useGetMovies(10, currentPage);
-  const { logout } = useLogin();
-  const movies = data?.movies;
-  const setNextPage = () => setCurrentPage(p => p + 1);
-  const setPrevPage = () => setCurrentPage(p => p - 1);
+import { Loading } from '../Loading/loading.component';
+import { Pagination } from '../Pagination/pagination.component';
+import styles from './movies.module.scss';
+import { PosterImage } from './poster-image.component';
+import { useMovies } from './use-movies.hook';
+
+export const Movies = () => {
+  const {
+    movies,
+    isPending,
+    setNextPage,
+    setPrevPage,
+    logout,
+    currentPage,
+    setCurrentPage,
+    data,
+    handleMovieClick,
+  } = useMovies();
+
   if (isPending) {
     return (
       <main className={styles.noMoviesWrapper}>
         <Loading />
       </main>
-    )
+    );
   }
+
   if (!movies?.length && !isPending) {
     return (
       <main className={styles.noMoviesWrapper}>
         <h2>Your movies list is empty</h2>
-        <PrimaryButton onClick={() => router.push('/movie')} text="Add a new movie" />
+        <PrimaryButton onClick={handleMovieClick} text="Add a new movie" />
       </main>
-    )
+    );
   }
+
   return (
     <main className={styles.moviesWrapper}>
       <section className={styles.topSectionWrapper}>
         <div className={styles.titleWrapper}>
           <h2>My Movies</h2>
-          <PlusCircleOutlined onClick={() => router.push("/movie")} />
+          <PlusCircleOutlined onClick={() => handleMovieClick()} />
         </div>
         <div className={styles.logoutWrapper} onClick={() => logout()}>
           <span>Logout</span>
@@ -49,11 +54,7 @@ export default function Movies() {
       </section>
       <section className={styles.movies}>
         {movies.map((m: any) => (
-          <div
-            key={m.id}
-            className={styles.moviesCard}
-            onClick={() => router.push("/movie/" + m.id)}
-          >
+          <div key={m.id} className={styles.moviesCard} onClick={() => handleMovieClick(m.id)}>
             <div className={styles.poster}>
               <PosterImage poster={m.poster} alt={m.title} />
             </div>
@@ -73,4 +74,4 @@ export default function Movies() {
       />
     </main>
   );
-}
+};
